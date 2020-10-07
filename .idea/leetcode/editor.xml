@@ -19,6 +19,22 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/en/P1021RemoveOutermostParentheses.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/en/P1021RemoveOutermostParentheses.java" />
+              <option name="questionId" value="1078" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/en/P1047RemoveAllAdjacentDuplicatesInString.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/en/P1047RemoveAllAdjacentDuplicatesInString.java" />
+              <option name="questionId" value="1128" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/en/P138CopyListWithRandomPointer.java">
           <value>
             <LeetcodeEditor>
@@ -40,6 +56,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/en/P1518WaterBottles.java" />
               <option name="questionId" value="1642" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/en/P1544MakeTheStringGreat.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/en/P1544MakeTheStringGreat.java" />
+              <option name="questionId" value="1666" />
             </LeetcodeEditor>
           </value>
         </entry>
