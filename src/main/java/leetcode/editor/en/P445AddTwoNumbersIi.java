@@ -48,7 +48,7 @@ public class P445AddTwoNumbersIi {
         ListNode h1  = solution.addTwoNumbers(l1, m1);
 
         NodeUtils.printNode(h1);
-
+        System.out.println("----");
         l1 = new ListNode(7);
         m1 = new ListNode(5);
         ListNode listNode = solution.addTwoNumbers(l1, m1);
@@ -89,6 +89,41 @@ public class P445AddTwoNumbersIi {
  */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        Stack<Integer> one = new Stack<>();
+        Stack<Integer> two = new Stack<>();
+        while (l1 != null) {
+            one.push(l1.val);
+            l1 = l1.next;
+        }
+        while (l2 != null) {
+            two.push(l2.val);
+            l2 = l2.next;
+        }
+        int tmp = 0;
+        ListNode dummpy = new ListNode(-1);
+        while (!one.empty() || !two.empty()) {
+            int value = tmp;
+            if (!one.empty()) {
+                value += one.pop();
+            }
+            if (!two.empty()) {
+                value += two.pop();
+            }
+            ListNode tempNode = new ListNode(value % 10);
+            tempNode.next = dummpy.next;
+            dummpy.next = tempNode;
+            tmp = value / 10;
+        }
+        if (tmp > 0) {
+            ListNode tempNode = new ListNode(tmp);
+            tempNode.next = dummpy.next;
+            dummpy.next = tempNode;
+        }
+        return dummpy.next;
+
+    }
+    public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
 
         Stack<Integer> one = new Stack<>();
         Stack<Integer> two = new Stack<>();
@@ -168,7 +203,6 @@ class Solution {
         return reversNode(h);
 
     }
-
     private ListNode reversNode(ListNode l) {
         ListNode pre = null;
         ListNode cur = l;
