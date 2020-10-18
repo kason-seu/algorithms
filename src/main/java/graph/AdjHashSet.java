@@ -62,7 +62,13 @@ public class AdjHashSet implements IGraph<Integer> {
         validVertex(v);
         return adj[v];
     }
+    public int V() {
+        return V;
+    }
 
+    public int E() {
+        return E;
+    }
     @Override
     public int degree(Integer v) {
         validVertex(v);

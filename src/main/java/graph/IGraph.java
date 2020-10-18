@@ -12,4 +12,6 @@ public interface IGraph<K> {
     public Iterable<K> adj(K v);
     public int degree(K v);
 
+    public int V();
+    public int E();
 }

@@ -67,7 +67,13 @@ public class Graph implements IGraph<Integer> {
         validVertex(v);
         return adj[v].size();
     }
+    public int V() {
+        return V;
+    }
 
+    public int E() {
+        return E;
+    }
     public static void main(String[] args) {
         Graph adjMatrix = new Graph("g.txt");
         System.out.println(adjMatrix);
