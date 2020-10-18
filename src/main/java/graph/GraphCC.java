@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GraphCC {
 
@@ -41,12 +42,44 @@ public class GraphCC {
         return visited;
     }
 
+    public boolean isConnected(int v, int w) {
+        G.validVertex(v);
+        G.validVertex(w);
+        return visited[v] == visited[w];
+    }
+
+    public List<Integer>[] component() {
+
+        List<Integer>[] res = new ArrayList[cccount];
+        for (int i = 0 ; i < cccount; i++) {
+            res[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < G.V(); i++) {
+            res[visited[i]].add(i);
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Graph graph = new Graph("g1.txt");
         GraphCC graphDFS = new GraphCC(graph);
 
         System.out.println(String.format("联通分量个数(connected component count) %d", graphDFS.getCccount()));
-        Arrays.stream(graphDFS.getVisited()).forEach(System.out::println);
-        System.out.println();
+
+        System.out.println(graphDFS.visited);
+
+        System.out.println(graphDFS.isConnected(1,2));
+        System.out.println(graphDFS.isConnected(0,5));
+
+        List<Integer>[] component = graphDFS.component();
+
+        for (List<Integer> one : component) {
+           for (int i : one) {
+               System.out.print(i + " ");
+           }
+            System.out.println();
+        }
+
+
     }
 }

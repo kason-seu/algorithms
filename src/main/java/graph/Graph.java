@@ -44,7 +44,7 @@ public class Graph implements IGraph<Integer> {
         }
     }
 
-    private void validVertex(int a) {
+    public void validVertex(int a) {
         Preconditions.checkArgument(a >= 0 && a < V, "vertex id invalid");
     }
 
