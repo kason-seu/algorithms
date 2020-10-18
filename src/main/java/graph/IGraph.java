@@ -14,4 +14,10 @@ public interface IGraph<K> {
 
     public int V();
     public int E();
+    // 先序遍历
+    public Iterable<K> preOrder();
+    // 后续遍历
+    public Iterable<K> afterOrder();
+
+    public Iterable<K> preOrderWithLoop();
 }

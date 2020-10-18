@@ -4,8 +4,7 @@ import com.google.common.base.Preconditions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Graph implements IGraph<Integer> {
 
@@ -74,9 +73,90 @@ public class Graph implements IGraph<Integer> {
     public int E() {
         return E;
     }
+
+    @Override
+    public Iterable<Integer> preOrder() {
+        boolean[] visited = new boolean[V];
+        List<Integer> pre = new ArrayList<>();
+        for (int v = 0; v < V; v++) {
+            if (!visited[v]) {
+                preDFS(v, visited, pre);
+            }
+        }
+        return pre;
+    }
+
+    private void preDFS(int curV, boolean[] visited, List<Integer> pre) {
+
+        visited[curV] = true;
+        pre.add(curV);
+
+        for (int w : adj(curV)) {
+            if (!visited[w]) {
+                preDFS(w, visited, pre);
+            }
+        }
+    }
+    @Override
+    public Iterable<Integer> afterOrder() {
+        boolean[] visited = new boolean[V];
+        List<Integer> after = new ArrayList<>();
+        for (int v = 0; v < V; v++) {
+            if (!visited[v]) {
+                afterDFS(v, visited, after);
+            }
+        }
+        return after;
+    }
+
+    @Override
+    public Iterable<Integer> preOrderWithLoop() {
+        Stack<Integer> stack = new Stack<>();
+        List<Integer> preWithLoop = new ArrayList<>();
+        boolean[] newVisited = new boolean[V];
+        for (int v = 0; v < V; v++) {
+            if (!newVisited[v]) {
+                newVisited[v] = true;
+                preWithLoop.add(v);
+                for (int w : adj(v)) {
+                    stack.push(w);
+                }
+                while (!stack.empty()) {
+                    int w = stack.pop();
+                    if (!newVisited[w]) {
+                        newVisited[w] = true;
+                        preWithLoop.add(w);
+                        for (int ww : adj(w)) {
+                            stack.push(ww);
+                        }
+                    }
+
+                }
+            }
+        }
+        return preWithLoop;
+    }
+
+    private void afterDFS(int curV, boolean[] visited, List<Integer> after) {
+        visited[curV] = true;
+        for (int w : adj(curV)) {
+            if (!visited[w]) {
+                afterDFS(w, visited, after);
+            }
+        }
+        after.add(curV);
+    }
+
     public static void main(String[] args) {
-        Graph adjMatrix = new Graph("g.txt");
+        Graph adjMatrix = new Graph("g1.txt");
         System.out.println(adjMatrix);
+        System.out.println("-===============");
+        // 遍历
+        adjMatrix.preOrder().forEach(System.out::println);
+        System.out.println("-===============");
+        adjMatrix.afterOrder().forEach(System.out::println);
+        System.out.println("===for loop pre order =====");
+        adjMatrix.preOrderWithLoop().forEach(System.out::println);
     }
 
     @Override
