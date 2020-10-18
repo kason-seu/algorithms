@@ -49,6 +49,10 @@ public class GraphSingleSourcePathRemoveVisited {
         return res;
     }
 
+    public int[] getPre() {
+        return pre;
+    }
+
     public static void main(String[] args) {
         Graph graph = new Graph("g1.txt");
         GraphSingleSourcePathRemoveVisited graphDFS = new GraphSingleSourcePathRemoveVisited(graph, 1);
