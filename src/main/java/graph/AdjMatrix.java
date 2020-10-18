@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class AdjMatrix {
+public class AdjMatrix implements IGraph<Integer>{
 
     private int V;
     private int E;
@@ -49,6 +49,37 @@ public class AdjMatrix {
        Preconditions.checkArgument(a >= 0 && a < V, "vertex id invalid");
     }
 
+    @Override
+    public boolean hasEdge(Integer v, Integer w) {
+        validVertex(v);
+        validVertex(w);
+        return adj[v][w] == 1;
+    }
+
+    @Override
+    public Iterable<Integer> adj(Integer v) {
+        validVertex(v);
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            if (adj[v][i] == 1) {
+                res.add(i);
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public int degree(Integer v) {
+        validVertex(v);
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            if (adj[v][i] == 1) {
+                res.add(i);
+            }
+        }
+        return res.size();
+    }
+
     public int V() {
        return V;
     }
@@ -57,34 +88,6 @@ public class AdjMatrix {
        return E;
     }
 
-    public boolean hasEdge(int v, int w) {
-       validVertex(v);
-       validVertex(w);
-       return adj[v][w] == 1;
-    }
-
-    /**
-     * 求一个定点的邻接边
-     * @param v
-     * @return
-     */
-    public List<Integer> adj(int v) {
-       validVertex(v);
-       List<Integer> res = new ArrayList<>();
-       for (int i = 0; i < V; i++) {
-           if (adj[v][i] == 1) {
-               res.add(i);
-           }
-       }
-       return res;
-
-    }
-
-    public int degree(int v) {
-
-        return adj(v).size();
-
-    }
     public static void main(String[] args) {
         AdjMatrix adjMatrix = new AdjMatrix("g.txt");
         System.out.println(adjMatrix);
