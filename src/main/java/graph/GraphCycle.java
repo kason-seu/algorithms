@@ -15,7 +15,8 @@ public class GraphCycle {
 
     private final int[] pre; // 记录顶点的父亲定点
 
-    private int loopid;
+    // 存储环的起终id值
+    private int loopid = -1;
     public GraphCycle(Graph g) {
         this.G = g;
         this.visited = new int[G.V()];
@@ -62,7 +63,7 @@ public class GraphCycle {
 
     public boolean isConnected() {
 
-        return visited[loopid] == 1;
+        return loopid >=0 && visited[loopid] == 1;
     }
 
     public List<Integer> path() {
@@ -84,16 +85,33 @@ public class GraphCycle {
     }
 
     public static void main(String[] args) {
-        Graph graph = new Graph("g1.txt");
+        Graph graph = new Graph("g2.txt");
         GraphCycle graphDFS = new GraphCycle(graph);
 
 
-        System.out.println(graphDFS.getLoopid());
+        if (!graphDFS.isConnected()) {
+            System.out.println("无环");
+        } else {
+            System.out.println("有环");
+            graphDFS.path().stream().forEach(res -> {
+                System.out.print(res + " ");
+            });
+            System.out.println();
+        }
 
-        graphDFS.path().stream().forEach(res -> {
-            System.out.print(res + " ");
-        });
-        System.out.println();
+        graph = new Graph("g1.txt");
+        graphDFS = new GraphCycle(graph);
+
+
+        if (!graphDFS.isConnected()) {
+            System.out.println("无环");
+        } else {
+            System.out.println("有环");
+            graphDFS.path().stream().forEach(res -> {
+                System.out.print(res + " ");
+            });
+            System.out.println();
+        }
 
 
     }
