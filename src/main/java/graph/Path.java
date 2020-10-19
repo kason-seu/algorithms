@@ -83,5 +83,20 @@ public class Path {
         System.out.println();
 
 
+        graphDFS = new Path(graph, 1, 5);
+
+        if (graphDFS.isConnected()) {
+            System.out.println("联通");
+        } else {
+            System.out.println("不联通");
+        }
+        path = graphDFS.path();
+
+        path.stream().forEach(res -> {
+            System.out.print(res + " ");
+        });
+        System.out.println();
+
+
     }
 }
