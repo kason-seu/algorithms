@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 计算从srcId 到 targetId 是否存在路径
  */
-public class Path {
+public class AnyTwoPointPath {
 
     private final Graph G;
     private final int[] visited;
@@ -16,7 +16,7 @@ public class Path {
     private int targetId;
     private final int[] pre; // 记录顶点的父亲定点
 
-    public Path(Graph g, int srcId, int targetId) {
+    public AnyTwoPointPath(Graph g, int srcId, int targetId) {
         this.G = g;
         this.visited = new int[G.V()];
         Arrays.fill(visited, -1);
@@ -70,7 +70,7 @@ public class Path {
 
     public static void main(String[] args) {
         Graph graph = new Graph("g1.txt");
-        Path graphDFS = new Path(graph, 1, 4);
+        AnyTwoPointPath graphDFS = new AnyTwoPointPath(graph, 1, 4);
 
         if (graphDFS.isConnected()) {
             System.out.println("联通");
@@ -83,7 +83,7 @@ public class Path {
         System.out.println();
 
 
-        graphDFS = new Path(graph, 1, 5);
+        graphDFS = new AnyTwoPointPath(graph, 1, 5);
 
         if (graphDFS.isConnected()) {
             System.out.println("联通");
