@@ -6,19 +6,19 @@ package graph;
 public class GraphBipartitionDetection {
 
     private Graph G;
-    private final boolean[] visited;
+
     private final int[] colors; //染色
     private boolean isBiPartition = true;
 
     public GraphBipartitionDetection(Graph g) {
         this.G = g;
-        this.visited = new boolean[G.V()];
+
         this.colors = new int[G.V()];
         for (int i = 0; i < G.V(); i++) {
             colors[i] = -1;
         }
         for (int v = 0; v < G.V(); v++) {
-            if (!visited[v]) {
+            if (colors[v] == -1) {
                 if (!dfs(v, 0)) {
                     isBiPartition = false;
                     break;
@@ -28,10 +28,10 @@ public class GraphBipartitionDetection {
     }
 
     private boolean dfs(int v, int color) {
-        visited[v] = true;
+        //visited[v] = true;
         colors[v] = color;
         for (int w : G.adj(v)) {
-            if (!visited[w]) {
+            if (colors[w] == -1) {
                 if (!dfs(w, 1 - color)) {
                     return false;
                 }
