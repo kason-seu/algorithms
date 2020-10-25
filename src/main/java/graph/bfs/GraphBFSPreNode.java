@@ -3,25 +3,27 @@ package graph.bfs;
 import graph.Graph;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GraphBFSSingleSourcePath {
+public class GraphBFSPreNode {
 
     private Graph G;
     private final boolean[] visited;
     private LinkedList<Integer> queue;
-    private int srcId;
+    private List<Integer> result = new ArrayList<>();
     private int[] pre;
 
-    public GraphBFSSingleSourcePath(Graph g, int srcId) {
+    public GraphBFSPreNode(Graph g) {
         this.G = g;
         this.visited = new boolean[G.V()];
-        this.srcId = srcId;
         this.pre = new int[G.V()];
         queue = new LinkedList<>();
-        bfs(this.srcId);
+        for (int v = 0; v < G.V(); v++) {
+            if (!visited[v]) {
+                bfs(v);
+            }
+        }
     }
 
     private void bfs(int v) {
@@ -31,7 +33,7 @@ public class GraphBFSSingleSourcePath {
         while (!queue.isEmpty()) {
             // 取出队列的头
             Integer first = queue.removeFirst();
-
+            result.add(first);
             if (first != null) {
                 for (int w : G.adj(first)) {
                     if (!visited[w]) {
@@ -42,33 +44,29 @@ public class GraphBFSSingleSourcePath {
                 }
             }
         }
+
+
     }
 
-    public boolean isConnectedTo(int targetId) {
-        G.validVertex(targetId);
-        return visited[targetId];
+    public List<Integer> getBfsResult() {
+        return result;
     }
 
-    public Iterable<Integer> getPath(int targetId) {
-        List<Integer> paths = new ArrayList<>();
-        if (!isConnectedTo(targetId)) {
-            return paths;
+
+    public void printNodeAndFather() {
+        for (int i : result) {
+            System.out.println(String.format("current node is %s, pre = %s", i, pre[i]));
         }
-        int curr = targetId;
-        while (curr != srcId) {
-            paths.add(curr);
-            curr = pre[curr];
-        }
-        paths.add(srcId);
-        Collections.reverse(paths);
-        return paths;
     }
-
     public static void main(String[] args) {
-        Graph graph = new Graph("g5.txt");
-        GraphBFSSingleSourcePath graphBFS = new GraphBFSSingleSourcePath(graph, 0);
+        Graph graph = new Graph("g1.txt");
+        GraphBFSPreNode graphBFS = new GraphBFSPreNode(graph);
+        graphBFS.getBfsResult().stream().forEach(res -> {
+            System.out.print(res + " ");
+        });
+        System.out.println();
 
-        System.out.println("0 --> 6 : " + graphBFS.getPath(6));
 
+        graphBFS.printNodeAndFather();
     }
 }

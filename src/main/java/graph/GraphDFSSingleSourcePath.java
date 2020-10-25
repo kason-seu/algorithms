@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class GraphSingleSourcePath {
+public class GraphDFSSingleSourcePath {
 
     private final Graph G;
     private final int[] visited;
     private int srcId;
     private final int[] pre; // 记录顶点的父亲定点
 
-    public GraphSingleSourcePath(Graph g, int srcId) {
+    public GraphDFSSingleSourcePath(Graph g, int srcId) {
         this.G = g;
         this.visited = new int[G.V()];
         Arrays.fill(visited, -1);
@@ -55,10 +54,10 @@ public class GraphSingleSourcePath {
     }
 
     public static void main(String[] args) {
-        Graph graph = new Graph("g1.txt");
-        GraphSingleSourcePath graphDFS = new GraphSingleSourcePath(graph, 1);
+        Graph graph = new Graph("g5.txt");
+        GraphDFSSingleSourcePath graphDFS = new GraphDFSSingleSourcePath(graph, 0);
 
-        List<Integer> path = graphDFS.path(4);
+        List<Integer> path = graphDFS.path(6);
 
         path.stream().forEach(res -> {
             System.out.print(res + " ");
