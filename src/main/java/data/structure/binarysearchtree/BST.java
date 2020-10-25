@@ -134,6 +134,7 @@ public class BST<E extends Comparable<E>> {
         if (node.left == null) {
             Node rightTmp = node.right;
             node = null;
+            size--;
             return rightTmp;
         }
         node.left = removeMini(node.left);
@@ -150,11 +151,37 @@ public class BST<E extends Comparable<E>> {
         if (node.right == null) {
             Node leftTmp = node.left;
             node = null;
+            size--;
             return leftTmp;
         }
 
         node.right = removeMax(node.right);
         return node;
+    }
+
+    public void removeAnyValue(E e) {
+        removeAnyValue(this.root, e);
+    }
+    private Node removeAnyValue(Node node, E e) {
+
+        if (e.compareTo(node.e) < 0) {
+            node.left = removeAnyValue(node.left, e);
+        } else if (e.compareTo(node.e) > 0) {
+            node.right = removeAnyValue(node.right, e);
+        } else {
+            Node minimum = minimum(node.right);
+            Node node1 = removeMini(node.right);
+            size++;
+            minimum.left = node.left;
+            minimum.right = node1;
+            node = null;
+            size--;
+            return minimum;
+        }
+
+
+        return node;
+
     }
     public static void main(String[] args) {
         BST<Integer> bst = new BST<>();
