@@ -74,4 +74,56 @@ public class FucntionCaseTest {
         //DoubleToLongFunction
     }
 
+
+    @Test
+    public void testSuppier() {
+
+        Supplier<List<String>> supplier = () -> Lists.newArrayList("abbb");
+
+        //IntSupplier
+        //LongSupplier
+        //DoubleSupplier
+    }
+
+    @Test
+    public void testUnaryOperatror() {
+        UnaryOperator<String> unaryOperator = (String s) -> s + s;
+        //IntUnaryOperator
+        //LongUnaryOperator
+        //DoubleUnaryOperator
+    }
+
+    @Test
+    public void testBinaryOperator() {
+        BinaryOperator<String> binaryOperator = (String s1, String s2) -> {
+            return s1 + s2;
+        };
+
+        //IntBinaryOperator
+        //DoubleBinaryOperator
+        //LongBinaryOperator
+    }
+
+    @Test
+    public void testBiFunction() {
+        BiFunction<String,String, List<String>> biFunction = (String a, String b) -> {
+            return Lists.newArrayList(a,b);
+        };
+    }
+
+    @Test
+    public void testBiPredicate() {
+        BiPredicate<String, Integer> biPredicate = (String s, Integer i) -> {
+            return true;
+        };
+    }
+
+    @Test
+    public void testBiConsumer() {
+        BiConsumer<String,Integer> biConsumer = (String s, Integer i) -> {
+            System.out.println(s);
+            System.out.println(i);
+        };
+    }
+
 }
