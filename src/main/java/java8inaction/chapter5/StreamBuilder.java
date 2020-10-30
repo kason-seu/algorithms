@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class StreamBuilder {
@@ -28,7 +29,7 @@ public class StreamBuilder {
                 .forEach(System.out::print);
         System.out.println();
 
-        // generator
+        // generator 生成流
 
         Stream.generate(new Supplier<Object>(){
 
@@ -44,5 +45,13 @@ public class StreamBuilder {
             }
         }).limit(10).forEach(System.out::print);
         System.out.println();
+
+        // iterate 生成无线流
+        Stream.iterate(0, n -> n+1).limit(10).forEach(System.out::println);
+        System.out.println("--------");
+        IntStream.iterate(0, val -> val < 10, n -> n + 1)
+                .limit(100)
+                .forEach(System.out::println);
+        System.out.println("--------");
     }
 }
