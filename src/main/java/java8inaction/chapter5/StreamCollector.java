@@ -1,10 +1,14 @@
 package java8inaction.chapter5;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class StreamCollector {
@@ -93,8 +97,102 @@ public class StreamCollector {
         System.out.println(listGroupByMap);
 
 
+        Map<String, List<Integer>> customFunctionGroupby = Lists.newArrayList(1, 1, 2, 2, 3, 3, 3, 3, 3, 8, 8, 8, 8, 8, 12, 12, 11, 111)
+                .stream()
+                .collect(Collectors
+                        .groupingBy(val -> {
+                            if (val < 5) {
+                                return "LOW";
+                            } else if (val < 10) {
+                                return "MEDIAN";
+                            } else {
+                                return "HIGH";
+                            }
+                        }, Collectors.toList()));
+
+        System.out.println(customFunctionGroupby);
+
+
+        Map<String, Map<Integer, Long>> twoLayerGroupBy = Lists.newArrayList(1, 1, 2, 2, 3, 3, 3, 3, 3, 8, 8, 8, 8, 8, 12, 12, 11, 111)
+                .stream()
+                .collect(Collectors.groupingBy(val -> {
+                    if (val < 5) {
+                        return "LOW";
+                    } else if (val < 10) {
+                        return "MEDIAN";
+                    } else {
+                        return "HIGH";
+                    }
+                }, Collectors.groupingBy(Function.identity(), Collectors.counting())));
+        System.out.println(twoLayerGroupBy);
+
+
+        Map<Integer, Integer> collectingAndThen = Lists.newArrayList(1, 1, 2, 2, 3, 3, 3, 3, 3, 8, 8, 8, 8, 8, 12, 12, 11, 111)
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.collectingAndThen(Collectors.summingInt((Integer a) -> a), a -> a)));
+                //.collect(Collectors.groupingBy(Function.identity(), Collectors.collectingAndThen(Collectors.maxBy(Integer::compareTo), Optional::get)));
+
+        System.out.println(collectingAndThen);
+
+        Map<Integer, Set<String>> groupByMapping = Lists.newArrayList(1, 1, 2, 2, 3, 3, 3, 3, 3, 8, 8, 8, 8, 8, 12, 12, 11, 111)
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.mapping((Integer val) -> {
+                    if (val < 5) {
+                        return "LOW";
+                    } else if (val < 10) {
+                        return "MEDIAN";
+                    } else {
+                        return "HIGH";
+                    }
+                }, Collectors.toSet())));
+
+        System.out.println(groupByMapping);
+
+
+        Map<Boolean, List<Integer>> partitoningByTest = Lists.newArrayList(1, 1, 2, 2, 3, 3, 3, 3, 3, 8, 8, 8, 8, 8, 12, 12, 11, 111)
+                .stream()
+                .collect(Collectors.partitioningBy((Integer v) -> v > 5, Collectors.toList()));
+        System.out.println(partitoningByTest);
 
 
 
+        // 自定义Collector的实现.
+        ListCollector listCollector = new ListCollector();
+        Map<Integer, List<Integer>> customCollector = Lists.newArrayList(1, 1, 2, 2, 3, 3, 3, 3, 3, 8, 8, 8, 8, 8, 12, 12, 11, 111)
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), listCollector));
+        System.out.println(customCollector);
+
+    }
+    static class ListCollector implements Collector<Integer, List<Integer>, List<Integer>> {
+
+
+        @Override
+        public Supplier<List<Integer>> supplier() {
+            return () -> Lists.newArrayList();
+        }
+
+        @Override
+        public BiConsumer<List<Integer>, Integer> accumulator() {
+            return List::add;
+        }
+
+        @Override
+        public BinaryOperator<List<Integer>> combiner() {
+            return (List<Integer> l1, List<Integer> l2) ->{
+                l1.addAll(l2);
+                return l1;
+            };
+        }
+
+        @Override
+        public Function<List<Integer>, List<Integer>> finisher() {
+            return Function.identity();
+        }
+
+        @Override
+        public Set<Characteristics> characteristics() {
+            return Sets.newHashSet(Characteristics.IDENTITY_FINISH);
+        }
     }
 }
