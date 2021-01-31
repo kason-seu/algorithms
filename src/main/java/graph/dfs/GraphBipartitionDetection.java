@@ -1,4 +1,4 @@
-package graph;
+package graph.dfs;
 
 /**
  * 二分图检测

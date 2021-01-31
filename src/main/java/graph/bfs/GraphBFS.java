@@ -1,11 +1,10 @@
 package graph.bfs;
 
-import graph.Graph;
+import graph.dfs.Graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
 public class GraphBFS {
 

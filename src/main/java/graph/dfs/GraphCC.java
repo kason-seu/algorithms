@@ -1,10 +1,6 @@
-package graph;
-
-import com.google.common.collect.Lists;
+package graph.dfs;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class GraphCC {
 

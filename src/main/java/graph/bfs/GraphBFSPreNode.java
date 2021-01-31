@@ -1,6 +1,6 @@
 package graph.bfs;
 
-import graph.Graph;
+import graph.dfs.Graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

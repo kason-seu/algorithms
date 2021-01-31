@@ -1,18 +1,21 @@
-package graph;
+package graph.dfs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GraphSingleSourcePathRemoveVisited {
+public class GraphDFSSingleSourcePath {
 
     private final Graph G;
+    private final int[] visited;
     private int srcId;
     private final int[] pre; // 记录顶点的父亲定点
 
-    public GraphSingleSourcePathRemoveVisited(Graph g, int srcId) {
+    public GraphDFSSingleSourcePath(Graph g, int srcId) {
         this.G = g;
+        this.visited = new int[G.V()];
+        Arrays.fill(visited, -1);
 
         pre = new int[G.V()];
         Arrays.fill(pre, -1);
@@ -22,9 +25,10 @@ public class GraphSingleSourcePathRemoveVisited {
     }
 
     private void dfs(int v, int parentId) {
+        visited[v] = 1;
         pre[v] = parentId;
         for (int w : G.adj(v)) {
-            if (pre[w] == -1) { // 没访问过
+            if (visited[w] == -1) { // 没访问过
                 dfs(w,v);
             }
         }
@@ -32,7 +36,7 @@ public class GraphSingleSourcePathRemoveVisited {
 
     public boolean isConnectedTo(int w) {
         G.validVertex(w);
-        return pre[w] != -1;
+        return visited[w] == 1;
     }
 
     public List<Integer> path(int targetId) {
@@ -49,15 +53,11 @@ public class GraphSingleSourcePathRemoveVisited {
         return res;
     }
 
-    public int[] getPre() {
-        return pre;
-    }
-
     public static void main(String[] args) {
-        Graph graph = new Graph("g1.txt");
-        GraphSingleSourcePathRemoveVisited graphDFS = new GraphSingleSourcePathRemoveVisited(graph, 1);
+        Graph graph = new Graph("g5.txt");
+        GraphDFSSingleSourcePath graphDFS = new GraphDFSSingleSourcePath(graph, 0);
 
-        List<Integer> path = graphDFS.path(4);
+        List<Integer> path = graphDFS.path(6);
 
         path.stream().forEach(res -> {
             System.out.print(res + " ");
@@ -66,13 +66,6 @@ public class GraphSingleSourcePathRemoveVisited {
 
 
         path = graphDFS.path(5);
-
-        path.stream().forEach(res -> {
-            System.out.print(res + " ");
-        });
-        System.out.println();
-
-        path = graphDFS.path(2);
 
         path.stream().forEach(res -> {
             System.out.print(res + " ");

@@ -1,6 +1,7 @@
-package graph;
+package graph.dfs;
 
 import com.google.common.base.Preconditions;
+import graph.IGraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
