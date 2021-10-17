@@ -99,6 +99,17 @@ public class P剑指OfferII027回文链表AMhZSa {
         int[] arr = new int[]{1,2,3,3,2,1};
         ListNode head = NodeUtils.condtructList(arr);
 
+        boolean palindrome = solution.isPalindrome(head);
+
+        System.out.println(palindrome);
+
+
+        arr = new int[]{1,2,3};
+        head = NodeUtils.condtructList(arr);
+
+        palindrome = solution.isPalindrome(head);
+
+        System.out.println(palindrome);
 
         System.out.println("Hello world");
     }
@@ -115,6 +126,44 @@ public class P剑指OfferII027回文链表AMhZSa {
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
+
+        recordHead = head;
+        return reverse_dg(head);
+
+    }
+
+    private ListNode recordHead;
+    private boolean reverse_dg(ListNode head) {
+
+        if (head != null) {
+
+
+            boolean result = reverse_dg(head.next);
+
+
+
+            /*if (result) {
+                if (head.val == recordHead.val) {
+                    recordHead = recordHead.next;
+                    return true;
+                } else {
+                    recordHead = recordHead.next;
+                    return false;
+                }
+            } else {
+                return false;
+            }*/
+            if (!result) {
+                return false;
+            }
+
+            if (head.val != recordHead.val) {
+                return false;
+            }
+
+            recordHead = recordHead.next;
+
+        }
 
         return true;
 
