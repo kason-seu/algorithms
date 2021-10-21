@@ -102,17 +102,18 @@
 package leetcode.editor.cn;
 
 import common.ListNode;
+import common.NodeUtils;
 
 public class P剑指OfferII024反转链表UHnkqh {
     public static void main(String[] args) {
         Solution solution = new P剑指OfferII024反转链表UHnkqh().new Solution();
         int[] arr = new int[]{1,2,3,4};
-        ListNode head = build(arr);
+        ListNode head = NodeUtils.condtructList(arr);
 
 
-        ListNode listNode = solution.reverseList(head);
+        solution.reverseList(head);
 
-        listNode = solution.tailHead;
+        ListNode listNode = solution.tailHead;
 
         while (listNode != null) {
             System.out.println(listNode.val);
@@ -122,17 +123,7 @@ public class P剑指OfferII024反转链表UHnkqh {
         System.out.println("Hello world");
     }
 
-    private static ListNode build(int[] arr) {
-        ListNode head = new ListNode(arr[0]);
-        if (arr.length > 1) {
-            ListNode cycle = head;
-            for (int i = 1; i < arr.length; i++) {
-                cycle.next = new ListNode(arr[i]);
-                cycle = cycle.next;
-            }
-        }
-        return head;
-    }
+
     //leetcode submit region begin(Prohibit modification and deletion)
 /**
  * Definition for singly-linked list.
