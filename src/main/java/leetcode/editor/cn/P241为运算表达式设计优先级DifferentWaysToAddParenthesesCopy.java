@@ -54,12 +54,11 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class P241为运算表达式设计优先级DifferentWaysToAddParentheses {
+public class P241为运算表达式设计优先级DifferentWaysToAddParenthesesCopy {
     public static void main(String[] args) {
-        Solution solution = new P241为运算表达式设计优先级DifferentWaysToAddParentheses().new Solution();
+        Solution solution = new P241为运算表达式设计优先级DifferentWaysToAddParenthesesCopy().new Solution();
         String express = "2*3-4*5";
         List<Integer> integers = solution.diffWaysToCompute(express);
 
@@ -133,11 +132,6 @@ public class P241为运算表达式设计优先级DifferentWaysToAddParentheses 
                         result.add(num * ri);
                     }
                     break;
-                case '/':
-                    for (int ri : dg) {
-                        result.add(num / ri);
-                    }
-                    break;
             }
 
 
@@ -164,9 +158,6 @@ public class P241为运算表达式设计优先级DifferentWaysToAddParentheses 
                         break;
                     case '*':
                         newNum = num * nextNum;
-                        break;
-                    case '/':
-                        newNum = num / nextNum;
                         break;
                 }
 
