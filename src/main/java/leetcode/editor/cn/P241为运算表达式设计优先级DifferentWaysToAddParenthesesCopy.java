@@ -53,6 +53,8 @@
 
 package leetcode.editor.cn;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,19 @@ public class P241为运算表达式设计优先级DifferentWaysToAddParenthesesC
         for(int s : integers) {
             System.out.println(s);
         }
+        System.out.println("Hello world" + integers);
+
+
+        express = "1+5-2";
+      integers = solution.diffWaysToCompute(express);
+
+
+        System.out.println("Hello world" + integers);
+
+        express = "2-1-1";
+        integers = solution.diffWaysToCompute(express);
+
+
         System.out.println("Hello world" + integers);
     }
 
@@ -85,6 +100,7 @@ public class P241为运算表达式设计优先级DifferentWaysToAddParenthesesC
         }
 
         private List<Integer> dg(String expression, int quotaNum, int usedQuota) {
+
 
 
             if (usedQuota >= quotaNum) {
@@ -113,26 +129,51 @@ public class P241为运算表达式设计优先级DifferentWaysToAddParenthesesC
             int num = flag? - 1 * Integer.parseInt(sb.toString()) : Integer.parseInt(sb.toString());
             //if (c == '+') {
             List<Integer> result = new ArrayList<>();
-            List<Integer> dg = dg(expression.substring(i + 1), quotaNum, usedQuota + 1);
+            List<Integer> dg = new ArrayList<>();
+            if (usedQuota == quotaNum - 1 && (i + 1 < expression.length())) {
+                //
+                int j = i + 1;
+
+                // j - 最后一个位置
+                int n1 = Integer.parseInt(expression.substring(i + 1, expression.length()));
 
 
-            switch (c) {
-                case '+':
-                    for (int ri : dg) {
-                        result.add(ri + num);
-                    }
-                    break;
-                case '-':
-                    for (int ri : dg) {
-                        result.add(num - ri);
-                    }
-                    break;
-                case '*':
-                    for (int ri : dg) {
-                        result.add(num * ri);
-                    }
-                    break;
+                switch (c) {
+                    case '+':
+                         dg.add(num + n1);
+                        break;
+                    case '-':
+                        dg.add(num - n1);
+                        break;
+                    case '*':
+                        dg.add(num * n1);
+                        break;
+                }
+                return dg;
+
+            } else {
+                dg = dg(expression.substring(i + 1), quotaNum, usedQuota + 1);
+                switch (c) {
+                    case '+':
+                        for (int ri : dg) {
+                            result.add(ri + num);
+                        }
+                        break;
+                    case '-':
+                        for (int ri : dg) {
+                            result.add(num - ri);
+                        }
+                        break;
+                    case '*':
+                        for (int ri : dg) {
+                            result.add(num * ri);
+                        }
+                        break;
+                }
             }
+
+
+
 
 
             if (usedQuota < quotaNum) {
