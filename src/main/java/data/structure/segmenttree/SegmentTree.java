@@ -1,17 +1,14 @@
 package data.structure.segmenttree;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicates;
-import jdk.incubator.foreign.CLinker;
+import com.google.common.cache.Weigher;
 
-public class SegmentTree <E>{
-
-
+public class SegmentTree <E> {
     private E[] tree;
     private E[] data;
+    private Merger<E> merger;
 
-
-    public SegmentTree(E[] value) {
+    public SegmentTree(E[] value, Merger<E> merger) {
         this.data = (E[])new Object[value.length];
 
         for (int i = 0; i < value.length; i++) {
@@ -19,6 +16,9 @@ public class SegmentTree <E>{
         }
 
         this.tree = (E[])new Object[4 * value.length];
+        this.merger = merger;
+
+        buildSegmentTree(0,0,this.data.length - 1);
 
     }
 
@@ -38,5 +38,52 @@ public class SegmentTree <E>{
 
     public int rightChild(int index) {
         return 2 * index + 2;
+    }
+
+    /**
+     *
+     * @param index: 该段的索引
+     * @param left： 线段树的左段，对应data 里面的索引
+     * @param right： 线段树的右段，对应data 里面的索引
+     * @return: 该段存储的值
+     */
+    public E buildSegmentTree(int index, int left, int right) {
+        if  (left == right) {
+            tree[index] = data[left];
+            return tree[index];
+        }
+        int mid = left + (right-left) / 2;
+
+        // 分裂成2个段
+        // 左段
+        E leftValue = buildSegmentTree(2 * index + 1, left, mid);
+        // 右段
+        E rightValue =buildSegmentTree(2 * index + 2, mid + 1, right);
+
+        // 聚合左段和右段的值
+        tree[index] = this.merger.merge(leftValue, rightValue);
+
+        return tree[index];
+    }
+
+
+    public void display(int index) {
+
+
+        if (index > tree.length - 1) {
+            return;
+        }
+
+        System.out.println(tree[index]);
+        display(2 * index  + 1);
+        display(2 * index + 2);
+
+
+    }
+    public static void main(String[] args) {
+        SegmentTree<Integer> segmentTree = new SegmentTree<>(new Integer[]{1,2,3,4,5}, Integer::sum);
+
+        segmentTree.display(0);
+
     }
 }
