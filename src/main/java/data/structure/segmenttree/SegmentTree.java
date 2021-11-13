@@ -1,7 +1,6 @@
 package data.structure.segmenttree;
 
 import com.google.common.base.Preconditions;
-import com.google.common.cache.Weigher;
 
 public class SegmentTree <E> {
     private E[] tree;
@@ -86,6 +85,30 @@ public class SegmentTree <E> {
     }
 
 
+
+    private void update(int index, E e) {
+
+        updateDg(0, 0, data.length - 1, index , e);
+    }
+
+    private void updateDg(int treeIndex, int l, int r, int dataIndex, E e) {
+
+        if (l == r) {
+            tree[treeIndex] = e;
+            return;
+        }
+
+        int mid = l + (r - l) / 2;
+
+        if (dataIndex > mid) {
+            updateDg(2 * treeIndex + 2, mid + 1, r, dataIndex, e);
+        } else {
+            updateDg(2 * treeIndex + 1, l, mid, dataIndex, e);
+        }
+        tree[treeIndex] = merger.merge(tree[2 * treeIndex + 1], tree[2 * treeIndex + 2]);
+    }
+
+
     public void display(int index) {
 
 
@@ -106,7 +129,12 @@ public class SegmentTree <E> {
 
         Integer integer = segmentTree.queryByRange(0, 0, segmentTree.getSize() - 1, 1, 3);
 
-        System.out.println("range 2:4 sum = " + integer);
+        System.out.println("range 1:3 sum = " + integer);
+
+        segmentTree.update(2, 10);
+        integer = segmentTree.queryByRange(0, 0, segmentTree.getSize() - 1, 1, 3);
+
+        System.out.println("range 1:3 sum = " + integer);
 
 
 
