@@ -67,6 +67,25 @@ public class SegmentTree <E> {
     }
 
 
+
+    public E queryByRange(int index, int treeL, int treeR, int left, int right) {
+
+        if (left == treeL && right == treeR) {
+            return tree[index];
+        }
+        int mid = treeL + (treeR - treeL) / 2;
+        if (right <= mid) {
+            return queryByRange(2 * index + 1, treeL, mid, left, right);
+        }
+        if (left >= mid + 1) {
+            return queryByRange(2 * index + 2, mid + 1, treeR, left, right);
+        }
+
+        // 即在左边又在右边
+        return merger.merge(queryByRange(2 * index + 1, treeL, mid, left, mid) , queryByRange(2 * index + 2,mid + 1, treeR, mid + 1, right));
+    }
+
+
     public void display(int index) {
 
 
@@ -84,6 +103,12 @@ public class SegmentTree <E> {
         SegmentTree<Integer> segmentTree = new SegmentTree<>(new Integer[]{1,2,3,4,5}, Integer::sum);
 
         segmentTree.display(0);
+
+        Integer integer = segmentTree.queryByRange(0, 0, segmentTree.getSize() - 1, 1, 3);
+
+        System.out.println("range 2:4 sum = " + integer);
+
+
 
     }
 }
