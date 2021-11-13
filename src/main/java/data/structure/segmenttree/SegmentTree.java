@@ -86,7 +86,7 @@ public class SegmentTree <E> {
 
 
 
-    private void update(int index, E e) {
+    public void update(int index, E e) {
 
         updateDg(0, 0, data.length - 1, index , e);
     }
