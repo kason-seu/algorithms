@@ -31,13 +31,6 @@ public class SegmentTree <E> {
         return data[index];
     }
 
-    public int leftChild(int index) {
-        return 2 * index + 1;
-    }
-
-    public int rightChild(int index) {
-        return 2 * index + 2;
-    }
 
     /**
      *
