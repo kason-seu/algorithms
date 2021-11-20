@@ -199,7 +199,9 @@ class Solution {
         return left + right + cur.val;
     }
     public int findTiltDg(TreeNode cur) {
-
+        if(cur == null) {
+            return 0;
+        }
 
         if (cur.left == null && cur.right == null) {
             int sink = cur.val;
