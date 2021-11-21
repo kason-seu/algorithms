@@ -1,4 +1,4 @@
-package algorithms.digui;
+package leetcode.editor.cn;
 
 public class 连续最大子数组和 {
 

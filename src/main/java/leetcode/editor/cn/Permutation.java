@@ -1,4 +1,4 @@
-package algorithms.digui;
+package leetcode.editor.cn;
 
 import java.util.ArrayList;
 import java.util.HashSet;
