@@ -4,7 +4,6 @@ import graph.model.Graph;
 import graph.model.GraphEdge;
 import graph.model.GraphNode;
 import graph.simrank.v2.ScoreTable;
-import org.jgrapht.graph.DefaultEdge;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -37,13 +36,13 @@ public class SimRank {
             graph.addVertex(graphNode);
             keys.add(nodes[0]);
         }
-        if (!nomi.contains(nodes[1])) {
+        if (!keys.contains(nodes[1])) {
             GraphNode<String, Map<String,Object>> graphNode = new GraphNode<>();
             graphNode.setId(nodes[1]);
             graph.addVertex(graphNode);
             keys.add(nodes[1]);
         }
-        size = nomi.size();
+        size = keys.size();
 
         GraphEdge<String, Map<String,Object>> graphEdge = new GraphEdge<>();
         graphEdge.setSrcId(nodes[0]);
