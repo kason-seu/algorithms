@@ -1,0 +1,21 @@
+<definitions>
+    <process id="process_1" name="hello">
+        <startEvent id="startEvent_1">
+            <outgoing>flow_1</outgoing>
+        </startEvent>
+        <sequenceFlow id="flow_1" sourceRef="startEvent_1" targetRef="printHello_1" />
+        <printHello id="printHello_1" name="hello">
+            <incoming>flow_1</incoming>
+            <outgoing>flow_2</outgoing>
+        </printHello>
+        <sequenceFlow id="flow_2" sourceRef="printHello_1" targetRef="printProcessEngine_1" />
+        <printProcessEngine id="printProcessEngine_1" name="processEngine">
+            <incoming>flow_2</incoming>
+            <outgoing>flow_3</outgoing>
+        </printProcessEngine>
+        <sequenceFlow id="flow_3" sourceRef="printProcessEngine_1" targetRef="endEvent_1"/>
+        <endEvent id="endEvent_1">
+            <incoming>flow_3</incoming>
+        </endEvent>
+    </process>
+</definitions>

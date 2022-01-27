@@ -6,7 +6,11 @@
 
     <groupId>org.kason</groupId>
     <artifactId>algorithms</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>workflow</module>
+    </modules>
     <dependencies>
 
         <!-- org.jgrapht:jgrapht-core:1.0.1-->
