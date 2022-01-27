@@ -3,13 +3,16 @@ package com.kason.workflow.builder;
 import com.kason.workflow.entity.PeEdge;
 import com.kason.workflow.entity.PeNode;
 import com.kason.workflow.entity.PeProcess;
+import com.kason.workflow.utils.XmlUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@Slf4j
 public class XmlPeProcessBuilder {
+
     private String xmlStr;
     private final Map<String, PeNode> id2PeNode = new HashMap<>();
     private final Map<String, PeEdge> id2PeEdge = new HashMap<>();
@@ -18,6 +21,10 @@ public class XmlPeProcessBuilder {
         this.xmlStr = xmlStr;
     }
 
+    public static void main(String[] args) throws Exception {
+        XmlPeProcessBuilder xmlPeProcessBuilder = new XmlPeProcessBuilder("/Users/mingtong/opensource/algorithms/workflow/src/main/resources/workflow.xml");
+        xmlPeProcessBuilder.build();
+    }
     public PeProcess build() throws Exception {
         //strToNode : 把一段xml转换为org.w3c.dom.Node
 
@@ -25,6 +32,8 @@ public class XmlPeProcessBuilder {
         //childByName : 找到definations子节点中nodeName为process的那个Node
         Node process = XmlUtil.childByName(definations, "process");
         NodeList childNodes = process.getChildNodes();
+
+        log.info("length : {}", childNodes.getLength());
 
         for (int j = 0; j < childNodes.getLength(); j++) {
             Node node = childNodes.item(j);
