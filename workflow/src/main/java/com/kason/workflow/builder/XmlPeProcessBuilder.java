@@ -21,10 +21,6 @@ public class XmlPeProcessBuilder {
         this.xmlStr = xmlStr;
     }
 
-    public static void main(String[] args) throws Exception {
-        XmlPeProcessBuilder xmlPeProcessBuilder = new XmlPeProcessBuilder("/Users/mingtong/opensource/algorithms/workflow/src/main/resources/workflow.xml");
-        xmlPeProcessBuilder.build();
-    }
     public PeProcess build() throws Exception {
         //strToNode : 把一段xml转换为org.w3c.dom.Node
 

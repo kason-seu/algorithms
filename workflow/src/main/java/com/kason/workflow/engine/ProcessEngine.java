@@ -12,11 +12,6 @@ public class ProcessEngine {
         this.xmlStr = xmlStr;
     }
 
-    public static void main(String[] args) throws Exception {
-        ProcessEngine processEngine = new ProcessEngine("/Users/mingtong/opensource/algorithms/workflow/src/main/resources/workflow.xml");
-        processEngine.run();
-    }
-
     public void run() throws Exception {
         PeProcess peProcess = new XmlPeProcessBuilder(xmlStr).build();
 
