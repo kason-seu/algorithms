@@ -2,6 +2,7 @@ package com.kason.workflow.engine;
 
 import com.kason.workflow.builder.XmlPeProcessBuilder;
 import com.kason.workflow.data.PeContext;
+import com.kason.workflow.entity.PeEdge;
 import com.kason.workflow.entity.PeNode;
 import com.kason.workflow.entity.PeProcess;
 import com.kason.workflow.operator.IOperator;
@@ -29,6 +30,7 @@ public class ProcessEngine {
                 PeNode node = arrayBlockingQueue.take();
                 type2Operator.get(node.type).doTask(this, node, peContext);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     });
@@ -49,7 +51,7 @@ public class ProcessEngine {
         dispatchThread.setDaemon(true);
         dispatchThread.start();
 
-        executeNode(peProcess.start.out.to);
+        executeNode(peProcess.start.onlyOneOut().to);
     }
 
     private void executeNode(PeNode node) {
@@ -59,9 +61,7 @@ public class ProcessEngine {
             System.out.println("process finished!");
     }
 
-    public void nodeFinished(String peNodeID) {
-        PeNode node = peProcess.peNodeWithID(peNodeID);
-        PeNode temp = node.out.to;
-        executeNode(node.out.to);
+    public void nodeFinished(PeEdge nextPeEdgeID) {
+        executeNode(nextPeEdgeID.to);
     }
 }

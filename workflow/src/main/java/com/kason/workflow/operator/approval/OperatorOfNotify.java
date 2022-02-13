@@ -19,10 +19,10 @@ public class OperatorOfNotify implements IOperator {
 
         System.out.println(String.format("%s 提交的申请单 %s 被 %s 审批，结果为 %s",
                 peContext.getValue("applicant"),
-                peContext.getValue("form"),
+                peContext.getValue("price"),
                 peContext.getValue("approver"),
-                peContext.getValue("message")));
+                peContext.getValue("approvalResult")));
 
-        processEngine.nodeFinished(node.getId());
+        processEngine.nodeFinished(node.onlyOneOut());
     }
 }

@@ -1,9 +1,13 @@
 package com.kason.workflow.utils;
 
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.List;
+
 @Slf4j
 public class XmlUtil {
 
@@ -18,7 +22,18 @@ public class XmlUtil {
         return XmlReader.getDocParent(xml);
     }
 
+    public static List<Node> childsByName(Node node, String childName) {
 
+        List<Node> nodes = Lists.newArrayList();
+        NodeList childNodes = node.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            if (childNodes.item(i).getNodeType() == Node.TEXT_NODE) continue;
+            if (childNodes.item(i).getNodeName().equals(childName)) {
+                nodes.add(childNodes.item(i));
+            }
+        }
+        return nodes;
+    }
     public static Node childByName(Node node, String childName) {
 
         NodeList childNodes = node.getChildNodes();
@@ -52,5 +67,18 @@ public class XmlUtil {
      */
     public static String text(Node node) {
         return node.getTextContent();
+    }
+
+    public static String childTextByName(Node xmlNode, String expr) {
+
+        NodeList childNodes = xmlNode.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            if (childNodes.item(i).getNodeType() == Node.TEXT_NODE) continue;
+            if (childNodes.item(i).getNodeName().equals(expr)) {
+                return text(childNodes.item(i));
+            }
+        }
+        return null;
+
     }
 }

@@ -3,6 +3,7 @@ package com.kason.workflow.engine;
 import com.kason.workflow.operator.approval.OperatorOfApproval;
 import com.kason.workflow.operator.approval.OperatorOfApprovalApply;
 import com.kason.workflow.operator.approval.OperatorOfNotify;
+import com.kason.workflow.operator.approval.OperatorOfSimpleGateway;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,6 +58,33 @@ public class ProcessEngineTest {
         processEngine.registNodeProcessor(new OperatorOfApproval());
         processEngine.registNodeProcessor(new OperatorOfApprovalApply());
         processEngine.registNodeProcessor(new OperatorOfNotify());
+
+        processEngine.start();
+
+        Thread.sleep(1000 * 1000);
+
+    }
+
+
+    @Test
+    public void testRunV3() throws Exception {
+        //读取文件内容到字符串
+        URL url = this.getClass().getClassLoader().getResource("approval_branch.xml");
+        BufferedReader reader = new BufferedReader(new FileReader(new File(url.getPath())));
+        StringBuilder sb = new StringBuilder();
+        String line  = "";
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+            sb.append("\n");
+        }
+        String modelStr = sb.toString();
+        System.out.println("========= get the dag task ====" + modelStr);
+        ProcessEngine processEngine = new ProcessEngine(modelStr);
+
+        processEngine.registNodeProcessor(new OperatorOfApproval());
+        processEngine.registNodeProcessor(new OperatorOfApprovalApply());
+        processEngine.registNodeProcessor(new OperatorOfNotify());
+        processEngine.registNodeProcessor(new OperatorOfSimpleGateway());
 
         processEngine.start();
 

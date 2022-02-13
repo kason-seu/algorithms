@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @Slf4j
 public class XmlPeProcessBuilder {
@@ -55,14 +56,12 @@ public class XmlPeProcessBuilder {
     private void buildPeNode(Node node) {
         PeNode peNode = id2PeNode.computeIfAbsent(XmlUtil.attributeValue(node, "id"), id -> new PeNode(id));
         peNode.type = node.getNodeName();
+        peNode.xmlNode = node;
+        List<Node> inPeEdgeNodes = XmlUtil.childsByName(node, "incoming");
+        inPeEdgeNodes.stream().forEach(n -> peNode.in.add(id2PeEdge.computeIfAbsent(XmlUtil.text(n), id -> new PeEdge(id))));
 
-        Node inPeEdgeNode = XmlUtil.childByName(node, "incoming");
-        if (inPeEdgeNode != null)
-            //text : 得到inPeEdgeNode的nodeValue
-            peNode.in = id2PeEdge.computeIfAbsent(XmlUtil.text(inPeEdgeNode), id -> new PeEdge(id));
 
-        Node outPeEdgeNode = XmlUtil.childByName(node, "outgoing");
-        if (outPeEdgeNode != null)
-            peNode.out = id2PeEdge.computeIfAbsent(XmlUtil.text(outPeEdgeNode), id -> new PeEdge(id));
+        List<Node> outPeEdgeNodes = XmlUtil.childsByName(node, "outgoing");
+        outPeEdgeNodes.stream().forEach(n -> peNode.out.add(id2PeEdge.computeIfAbsent(XmlUtil.text(n), id -> new PeEdge(id))));
     }
 }

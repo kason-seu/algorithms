@@ -9,6 +9,8 @@ import com.kason.workflow.operator.IOperator;
  * 提交申请单
  */
 public class OperatorOfApprovalApply implements IOperator {
+    public static int price = 500;
+
     @Override
     public String getType() {
         return "approvalApply";
@@ -16,9 +18,10 @@ public class OperatorOfApprovalApply implements IOperator {
 
     @Override
     public void doTask(ProcessEngine processEngine, PeNode node, PeContext peContext) {
-        peContext.putValue("form", "formInfo");
+        //price每次减100
+        peContext.putValue("price", price -= 100);
         peContext.putValue("applicant", "小张");
 
-        processEngine.nodeFinished(node.getId());
+        processEngine.nodeFinished(node.onlyOneOut());
     }
 }

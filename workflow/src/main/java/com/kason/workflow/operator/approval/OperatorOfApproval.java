@@ -17,8 +17,14 @@ public class OperatorOfApproval implements IOperator {
     @Override
     public void doTask(ProcessEngine processEngine, PeNode node, PeContext peContext) {
         peContext.putValue("approver", "经理");
-        peContext.putValue("message", "审批通过");
 
-        processEngine.nodeFinished(node.getId());
+        Integer price = (Integer) peContext.getValue("price");
+        //价格<=200审批才通过，即：approvalResult=true
+        boolean approvalResult = price <= 200;
+        peContext.putValue("approvalResult", approvalResult);
+
+        System.out.println("approvalResult ：" + approvalResult + "，price : " + price);
+
+        processEngine.nodeFinished(node.onlyOneOut());
     }
 }

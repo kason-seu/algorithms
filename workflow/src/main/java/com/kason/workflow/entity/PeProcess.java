@@ -19,7 +19,7 @@ public class PeProcess implements Serializable {
      */
     private void updateProcess() {
         this.id = id;
-        this.start = start.out.to;
+       // this.start = start.out.to;
     }
     public PeNode peNodeWithID(String id) {
         updateProcess();
