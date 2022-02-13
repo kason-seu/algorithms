@@ -1,7 +1,10 @@
 package com.kason.workflow.entity;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 
+@Getter
 public class PeNode implements Serializable {
     private String id;
 
@@ -12,4 +15,6 @@ public class PeNode implements Serializable {
     public PeNode(String id) {
         this.id=id;
     }
+
+
 }

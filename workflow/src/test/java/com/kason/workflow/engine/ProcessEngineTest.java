@@ -1,7 +1,15 @@
 package com.kason.workflow.engine;
 
+import com.kason.workflow.operator.approval.OperatorOfApproval;
+import com.kason.workflow.operator.approval.OperatorOfApprovalApply;
+import com.kason.workflow.operator.approval.OperatorOfNotify;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.net.URL;
 
 import static org.junit.Assert.*;
 
@@ -32,8 +40,27 @@ public class ProcessEngineTest {
                 "</definitions>";
     }
     @Test
-    public void run() throws Exception {
-        ProcessEngine processEngine = new ProcessEngine(xml);
-        processEngine.run();
+    public void testRun() throws Exception {
+        //读取文件内容到字符串
+        URL url = this.getClass().getClassLoader().getResource("approval.xml");
+        BufferedReader reader = new BufferedReader(new FileReader(new File(url.getPath())));
+        StringBuilder sb = new StringBuilder();
+        String line  = "";
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+            sb.append("\n");
+        }
+        String modelStr = sb.toString();
+        System.out.println("========= get the dag task ====" + modelStr);
+        ProcessEngine processEngine = new ProcessEngine(modelStr);
+
+        processEngine.registNodeProcessor(new OperatorOfApproval());
+        processEngine.registNodeProcessor(new OperatorOfApprovalApply());
+        processEngine.registNodeProcessor(new OperatorOfNotify());
+
+        processEngine.start();
+
+        Thread.sleep(1000 * 1000);
+
     }
 }

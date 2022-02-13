@@ -23,7 +23,7 @@
     <!-- filter 级别范围过滤器 -->
     <!-- levelMin levelMax 范围 -->
     <appender name="StreamOperateFile" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="f:/ezLog/streamOperate.log" />
+        <param name="File" value="logs/streamOperate.log" />
         <param name="Append" value="true"/>
         <param name="MaxFileSize" value="10MB"/>
         <param name="MaxBackupIndex" value="20"/>
@@ -39,7 +39,7 @@
 
     <!-- 同上 回滚文件，有2个的原因就是演示，把不同的日志输出到不同的文件 -->
     <appender name="File" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="f:/ezLog/production.log" />
+        <param name="File" value="logs/production.log" />
         <param name="Append" value="true"/>
         <param name="MaxFileSize" value="10MB"/>
         <param name="MaxBackupIndex" value="20"/>
