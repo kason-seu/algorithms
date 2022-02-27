@@ -49,9 +49,6 @@ public class StreamBuilder {
         // iterate 生成无线流
         Stream.iterate(0, n -> n+1).limit(10).forEach(System.out::println);
         System.out.println("--------");
-        IntStream.iterate(0, val -> val < 10, n -> n + 1)
-                .limit(100)
-                .forEach(System.out::println);
-        System.out.println("--------");
+
     }
 }
