@@ -86,10 +86,16 @@ public class LRU {
         }
 
         public Node<K,V> removeHead() {
+            if (this.head == null) {
+                return null;
+            }
+            if (this.head == this.tail) {
+                this.head = null;
+                this.tail = null;
+                return null;
+            }
             Node<K, V> head = this.head;
-
-            Node<K,V> next = head.next;
-            this.head = next;
+            this.head =  head.next;
             return head;
         }
     }
