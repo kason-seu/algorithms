@@ -9,19 +9,19 @@ public class P剑指Offer62圆圈中最后剩下的数字 {
         Solution solution = new P剑指Offer62圆圈中最后剩下的数字().new Solution();
 
 
-        int i = solution.lastRemaining(5, 3);
+       //int i = solution.lastRemaining(5, 3);
 
 
-        System.out.println("Hello world  " + i);
+//        System.out.println("Hello world  " + i);
+//
+//        i = solution.lastRemaining(2, 2);
+//
+//
+//        System.out.println("Hello world  " + i);
 
-        i = solution.lastRemaining(2, 2);
+        int i = solution.lastRemaining(70866 ,116922);
 
-
-        System.out.println("Hello world  " + i);
-
-        i = solution.lastRemaining(70866 ,116922);
-
-
+        //int i = solution.lastRemaining(10000,500000);
         System.out.println("Hello world  " + i);
     }
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -36,6 +36,13 @@ public class P剑指Offer62圆圈中最后剩下的数字 {
      * }
      */
     class Solution {
+        class ListNode {
+            public int val;
+            public ListNode next;
+            public ListNode() {}
+            public ListNode(int val) { this.val = val; }
+            public ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+        }
         public int lastRemaining(int n, int m) {
 
             if (m == 1) {
@@ -49,15 +56,16 @@ public class P剑指Offer62圆圈中最后剩下的数字 {
                     t = t.next;
                 }
                 t.next = head;
-                //dg(head, m, 0);
-                //return re.val;
-                int index = 0;
+
+                int index = 1;
+                ListNode pre = head;
                 while (head.next != head) {
-                    if (index == m - 2) {
-                        head.next = head.next.next;
+                    if (index == m%n) {
+                        pre.next = head.next;
                         head = head.next;
-                        index = 0;
+                        index = 1;
                     }
+                    pre = head;
                     head = head.next;
                     index++;
 
