@@ -11,6 +11,7 @@
     <modules>
         <module>workflow</module>
         <module>graph</module>
+        <module>smallspring</module>
     </modules>
     <dependencyManagement>
     <dependencies>
