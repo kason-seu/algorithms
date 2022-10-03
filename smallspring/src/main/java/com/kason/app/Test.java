@@ -9,6 +9,9 @@ public class Test {
     public static void main(String[] args) {
         SmallApplicationContext smallApplicationContext = new SmallApplicationContext(AppConfig.class);
 
-        smallApplicationContext.getBean("userService");
+        System.out.println(smallApplicationContext.getBean("userService"));
+        System.out.println(smallApplicationContext.getBean("userService"));
+        System.out.println(smallApplicationContext.getBean("userService"));
+        System.out.println(smallApplicationContext.getBean("userService"));
     }
 }

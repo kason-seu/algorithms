@@ -4,6 +4,7 @@ import com.kason.service.AppConfig;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ public class SmallApplicationContext {
     private Class<?> appConfig;
 
     private ConcurrentMap<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
+    private ConcurrentMap<String , Object> singletonBeanMap = new ConcurrentHashMap<>();
 
     public SmallApplicationContext(Class<?> appConfig) {
         this.appConfig = appConfig;
@@ -89,6 +91,14 @@ public class SmallApplicationContext {
                         .collect(Collectors.toList());
 
                 beanDefinitions.forEach(System.out::println);
+
+                // 初始化单例bean
+                beanDefinitionMap.forEach((k,v) -> {
+                    if ("singleton".equals(v.getScope())) {
+                        Object createBean = createBean(k, v);
+                        singletonBeanMap.put(k, createBean);
+                    }
+                });
             }
 
 
@@ -102,7 +112,40 @@ public class SmallApplicationContext {
     public Object getBean(String beanName) {
         // 首先要知道bean的名字，才能生成这个bean，其次就是怎么确定这个类是单例还是多例那就需要新的注解@scope
         // 但是不能一个类上有多个注解，都要走一遍解析，这样太麻烦了，因此需要一个BeanDefinition 专门表达Bean创建的一些条件情况
-        return null;
+        BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
+        if (beanDefinition == null) {
+            throw new NullPointerException("不存在该bean");
+        }
+        String scope = beanDefinition.getScope();
+        if ("singleton".equals(scope)) {
+            Object bean = singletonBeanMap.get(beanName);
+            if (bean == null) {
+                Object createBean = createBean(beanName, beanDefinition);
+                singletonBeanMap.put(beanName, createBean);
+            }
+            return bean;
+        } else {
+            return createBean(beanName, beanDefinition);
+        }
+    }
+
+    private Object createBean(String beanName, BeanDefinition beanDefinition) {
+
+        Class<?> clazz = beanDefinition.getType();
+        Object bean = null;
+        try {
+            // 该bean需要有无参构造函数
+            bean = clazz.getConstructor().newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        return bean;
     }
 }
 
