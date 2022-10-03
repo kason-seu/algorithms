@@ -1,13 +1,10 @@
 package com.kason.service;
 
-import com.kason.spring.Autowired;
-import com.kason.spring.BeanNameAware;
-import com.kason.spring.Component;
-import com.kason.spring.Scope;
+import com.kason.spring.*;
 
 @Component
 @Scope("singleton")
-public class UserService implements BeanNameAware {
+public class UserService implements BeanNameAware, InitialingBean {
 
     @Autowired
     private OrderService orderService;
@@ -19,7 +16,14 @@ public class UserService implements BeanNameAware {
         this.beanName = beanName;
     }
 
+
     public void test() {
         System.out.println("这是一个测试类" + orderService);
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        // 执行逻辑
+        System.out.println("这是初始化时候调用的方法，用户随便做什么,Spring只管调，不管其他的");
     }
 }

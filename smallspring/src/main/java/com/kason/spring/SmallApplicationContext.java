@@ -153,9 +153,14 @@ public class SmallApplicationContext {
                             throw new RuntimeException(e);
                         }
                     });
-            // 装载beanName. 通过Aware回调
+            // 设置beanName. 通过Aware回调。回调接口Spring会主导做一些事情
             if (bean instanceof BeanNameAware) {
                 ((BeanNameAware)bean).setBeanName(beanName);
+            }
+
+            // 执行一个Bean的初始化逻辑
+            if (bean instanceof InitialingBean) {
+                ((InitialingBean)bean).afterPropertiesSet();
             }
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
