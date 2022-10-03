@@ -138,6 +138,7 @@ public class SmallApplicationContext {
         try {
             // 该bean需要有无参构造函数
             bean = clazz.getConstructor().newInstance();
+            // 装载bean对象里面的Field实例
             Field[] declaredFields = clazz.getDeclaredFields();
             Arrays.stream(declaredFields)
                     .filter(f -> f.isAnnotationPresent(Autowired.class))
@@ -152,7 +153,10 @@ public class SmallApplicationContext {
                             throw new RuntimeException(e);
                         }
                     });
-
+            // 装载beanName. 通过Aware回调
+            if (bean instanceof BeanNameAware) {
+                ((BeanNameAware)bean).setBeanName(beanName);
+            }
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
