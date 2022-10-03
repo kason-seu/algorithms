@@ -3,6 +3,7 @@ package com.kason.spring;
 import com.kason.service.AppConfig;
 import org.apache.commons.lang3.StringUtils;
 
+import java.beans.Introspector;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -68,6 +69,11 @@ public class SmallApplicationContext {
                         .map(clazz -> {
                             Component componentAnnotation = clazz.getDeclaredAnnotation(Component.class);
                             String clazzName = componentAnnotation.value();
+                            // 如果Component使用时，忘记了指定名称，那么我们将自动生成
+                            if (StringUtils.isBlank(clazzName)) {
+
+                                clazzName = Introspector.decapitalize(clazz.getSimpleName());
+                            }
                             System.out.println("clazzName " + clazzName);
 
                             BeanDefinition beanDefinition = new BeanDefinition();
@@ -100,12 +106,7 @@ public class SmallApplicationContext {
                     }
                 });
             }
-
-
         }
-
-
-
 
     }
 
