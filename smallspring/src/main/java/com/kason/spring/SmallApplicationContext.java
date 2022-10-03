@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.beans.Introspector;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Arrays;
@@ -82,7 +83,7 @@ public class SmallApplicationContext {
 
                             Scope scopeAnnotation = clazz.getDeclaredAnnotation(Scope.class);
 
-                            if (StringUtils.isBlank(scopeAnnotation.value()) ) {
+                            if (scopeAnnotation == null || StringUtils.isBlank(scopeAnnotation.value()) ) {
 
                                 beanDefinition.setScope("singleton");
 
@@ -133,10 +134,25 @@ public class SmallApplicationContext {
     private Object createBean(String beanName, BeanDefinition beanDefinition) {
 
         Class<?> clazz = beanDefinition.getType();
-        Object bean = null;
+        final Object bean;
         try {
             // 该bean需要有无参构造函数
             bean = clazz.getConstructor().newInstance();
+            Field[] declaredFields = clazz.getDeclaredFields();
+            Arrays.stream(declaredFields)
+                    .filter(f -> f.isAnnotationPresent(Autowired.class))
+                    .forEach(f -> {
+                        String fieldName = f.getName();
+                        System.out.println("FieldName : " + fieldName);
+                        Object fieldBean = getBean(fieldName);
+                        f.setAccessible(true);
+                        try {
+                            f.set(bean, fieldBean);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {

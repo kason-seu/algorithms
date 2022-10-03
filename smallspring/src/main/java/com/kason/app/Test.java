@@ -1,6 +1,7 @@
 package com.kason.app;
 
 import com.kason.service.AppConfig;
+import com.kason.service.UserService;
 import com.kason.spring.SmallApplicationContext;
 
 public class Test {
@@ -13,5 +14,10 @@ public class Test {
         System.out.println(smallApplicationContext.getBean("userService"));
         System.out.println(smallApplicationContext.getBean("userService"));
         System.out.println(smallApplicationContext.getBean("userService"));
+        System.out.println(smallApplicationContext.getBean("orderService"));
+
+        UserService userService = (UserService) smallApplicationContext.getBean("userService");
+        userService.test();
+
     }
 }
