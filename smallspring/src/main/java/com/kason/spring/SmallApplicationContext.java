@@ -8,6 +8,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +22,8 @@ public class SmallApplicationContext {
 
     private ConcurrentMap<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
     private ConcurrentMap<String , Object> singletonBeanMap = new ConcurrentHashMap<>();
+
+    private List<BeanPostProcessor> beanPostProcessorList = new ArrayList<>();
 
     public SmallApplicationContext(Class<?> appConfig) {
         this.appConfig = appConfig;
@@ -60,6 +63,7 @@ public class SmallApplicationContext {
                         .map(classPath -> {  // 装载bean
                             try {
                                 return classLoader.loadClass(classPath);
+
                             } catch (ClassNotFoundException e) {
                                 throw new RuntimeException(e);
                             }
@@ -68,6 +72,22 @@ public class SmallApplicationContext {
                             return clazz.isAnnotationPresent(Component.class);
                         })
                         .map(clazz -> {
+
+                            if (BeanPostProcessor.class.isAssignableFrom(clazz)) {
+                                try {
+                                    beanPostProcessorList.add((BeanPostProcessor) clazz.getDeclaredConstructor().newInstance());
+                                } catch (InstantiationException e) {
+                                    throw new RuntimeException(e);
+                                } catch (IllegalAccessException e) {
+                                    throw new RuntimeException(e);
+                                } catch (InvocationTargetException e) {
+                                    throw new RuntimeException(e);
+                                } catch (NoSuchMethodException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                return null;
+                            }
+
                             Component componentAnnotation = clazz.getDeclaredAnnotation(Component.class);
                             String clazzName = componentAnnotation.value();
                             // 如果Component使用时，忘记了指定名称，那么我们将自动生成
@@ -106,6 +126,9 @@ public class SmallApplicationContext {
                         singletonBeanMap.put(k, createBean);
                     }
                 });
+
+                //
+                System.out.println();
             }
         }
 
@@ -158,10 +181,17 @@ public class SmallApplicationContext {
                 ((BeanNameAware)bean).setBeanName(beanName);
             }
 
+            beanPostProcessorList.forEach(beanPostProcessor -> {
+                beanPostProcessor.processBeforeInitiallization(beanName, bean);
+            });
             // 执行一个Bean的初始化逻辑
             if (bean instanceof InitialingBean) {
                 ((InitialingBean)bean).afterPropertiesSet();
             }
+
+            beanPostProcessorList.forEach(beanPostProcessor -> {
+                beanPostProcessor.processAfterInitialization(beanName, bean);
+            });
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {

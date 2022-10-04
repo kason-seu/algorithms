@@ -24,6 +24,6 @@ public class UserService implements BeanNameAware, InitialingBean {
     @Override
     public void afterPropertiesSet() {
         // 执行逻辑
-        System.out.println("这是初始化时候调用的方法，用户随便做什么,Spring只管调，不管其他的");
+        System.out.println("UserServiceInit : 这是初始化时候调用的方法，用户随便做什么,Spring只管调，不管其他的");
     }
 }

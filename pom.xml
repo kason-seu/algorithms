@@ -12,6 +12,7 @@
         <module>workflow</module>
         <module>graph</module>
         <module>smallspring</module>
+        <module>smallmybatis</module>
     </modules>
     <dependencyManagement>
     <dependencies>
