@@ -20,10 +20,15 @@ public class Manachor2 {
 
     }
 
-    @AllArgsConstructor
+
     class Pair{
         public int C;
         public int R;
+
+        public Pair(int c, int r) {
+            C = c;
+            R = r;
+        }
     }
 
     private String addSharp(String s) {
