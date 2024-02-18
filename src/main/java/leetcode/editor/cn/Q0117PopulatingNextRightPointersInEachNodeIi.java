@@ -1,5 +1,9 @@
 package leetcode.editor.cn;
-/** * @author  kason * @date    2023-12-30 23:31:12 */public class Q0117PopulatingNextRightPointersInEachNodeIi{    //给定一个二叉树： 
+
+import java.util.HashMap;
+import java.util.Map;
+
+/** * @author  kason * @date    2023-12-30 23:31:12 */public class Q0117PopulatingNextRightPointersInEachNodeIi{    //给定一个二叉树：
 //
 // 
 //struct Node {
@@ -93,48 +97,33 @@ static class Node {
     }
 }
 class Solution {
+    // 记录每一层的最近被访问的节点PreNode
+    Map<Integer, Node> level2Node = new HashMap<>();
     public Node connect(Node root) {
-        return connect(root, null);
+
+        return postDFS(root, 0);
     }
 
-    public Node connect(Node node, Node beConnected) {
+    private Node postDFS(Node node, int level) {
 
         if (node == null) {
             return null;
         }
 
-        node.next = beConnected;
-
-        // 看子节点的连接情况
-        if (beConnected != null) {
-
-            if (node.right == null) {
-                while (beConnected != null && beConnected.left == null && beConnected.right == null) {
-                   beConnected = beConnected.next;
-                }
-                if (beConnected == null) {
-                    connect(node.left, null);
-                } else {
-                    connect(node.left, beConnected.left != null ? beConnected.left : beConnected.right);
-                }
-            } else {
-                connect(node.left, node.right);
-                while (beConnected != null && beConnected.left == null && beConnected.right == null) {
-                    beConnected = beConnected.next;
-                }
-                if (beConnected == null) {
-                    connect(node.right, null);
-                } else {
-                    connect(node.right, beConnected.left != null ? beConnected.left : beConnected.right);
-                }
-            }
-
-        } else {
-            connect(node.left, node.right);
-            connect(node.right, null);
+        Node left = postDFS(node.left, level + 1);
+        Node right =postDFS(node.right, level + 1);
+        /*if (left != null && right != null) {
+            left.next = right;
+        }*/
+        // handle curent node
+        Node cur = level2Node.get(level);
+        if (cur != null) {
+            cur.next = node;
         }
+        level2Node.put(level, node);
 
         return node;
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
